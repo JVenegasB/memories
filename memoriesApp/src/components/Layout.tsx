@@ -1,11 +1,23 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, /*useNavigate*/ } from 'react-router-dom';
 import Navbar from './Navbar';
+import { useEffect } from 'react';
+import { supabase } from '../supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 export default function Layout() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        supabase.auth.onAuthStateChange((_event, session) => {
+            if (!session) {
+                navigate('/login');
+            }
+        })
+    }, [])
+
     return (
         <div className='flex flex-row h-screen'>
-            <Navbar />
-            <div className='overflow-auto w-full' style={{backgroundImage: 'url(/src/assets/Kintsugibg.jpg)'}}>
+            <Navbar/>
+            <div className='overflow-auto w-full max-h-screen ' style={{ backgroundImage: 'url(/src/assets/Kintsugibg.jpg)' }}>
                 <Outlet />
             </div>
         </div>

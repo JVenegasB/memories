@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-
+import { supabase } from '../supabase/client';
+import { PiSpinnerGapBold } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 interface InputElementProps {
     label: string;
@@ -19,12 +21,16 @@ interface TextAreaElementProps {
     value: string;
     action: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
+interface ImageDataType {
+    url: string;
+    ishighlight: boolean;
+}
 
 const InputElement = ({ label, type, name, id, value, action }: InputElementProps) => {
     return (
         <div className="flex flex-col space-y-2 ">
             <label htmlFor={id} className="font-bold">{label}</label>
-            <input type={type} name={name} id={id} className="rounded-md border-2 px-2" value={value} onChange={action}/>
+            <input type={type} name={name} id={id} className="rounded-md border-2 px-2" value={value} onChange={action} />
         </div>
     )
 }
@@ -32,10 +38,11 @@ const TextAreaElement = ({ label, name, id, value, action }: TextAreaElementProp
     return (
         <div className="flex flex-col space-y-2">
             <label htmlFor={id} className="font-bold">{label}</label>
-            <textarea name={name} id={id} rows={5} className="rounded-md border-2 px-2" value={value} onChange={action}/>
+            <textarea name={name} id={id} rows={5} className="rounded-md border-2 px-2" value={value} onChange={action} />
         </div>
     )
 }
+
 
 interface ImageType {
     url: string;
@@ -43,6 +50,7 @@ interface ImageType {
     file: File;
 }
 export default function CreateNewMemory() {
+    const navigate = useNavigate();
     const [images, setImages] = useState<ImageType[]>([]);
     const [highlightImage, setHighlightImage] = useState<ImageType>();
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +76,11 @@ export default function CreateNewMemory() {
     const handleHighlightImage = (index: number) => {
         setHighlightImage(images[index]);
     }
+    useEffect(() => {
+        console.log(images)
+    }, [images])
     const [disableSend, setDisableSend] = useState(true);
-    const [data,setData] = useState({
+    const [data, setData] = useState({
         title: '',
         date: '',
         description: '',
@@ -87,18 +98,61 @@ export default function CreateNewMemory() {
         } else {
             setDisableSend(true);
         }
-    }, [images, highlightImage,data])
+    }, [images, highlightImage, data])
 
-    const sentData = () => {
-        console.log(data, images, highlightImage);
+    const sentData = async () => {
+        setDisableSend(true);
+        setLoading(true)
+        const uploadPromise = images.map((file) => {
+            const filePath = 'Images/' + data.date + '/' + file.name;
+            return supabase.storage.from('Images').upload(filePath, file.file, { upsert: false })
+        })
+        const results = await Promise.all(uploadPromise);
+        const imageData: ImageDataType[] = [];
+        results.forEach(({ data, error }, index) => {
+            if (error) {
+                console.error(`Error uploading file ${images[index].name}:`, error);
+            } else {
+                const isHighLight = images[index].name === highlightImage?.name;
+                imageData.push({
+                    url: data.path,
+                    ishighlight: isHighLight 
+                });
+
+                console.log(`File ${images[index].name} uploaded successfully:`, data);
+            }
+        });
+        console.log(data,imageData)
+        const { data: uploadData, error: uploadError } = await supabase.rpc('create_memory', {
+            date: data.date,
+            details: data.description,
+            title: data.title,
+            imagedata: imageData
+        })
+        if (uploadError) {
+            console.error('Error uploading memory:', uploadError);
+            return;
+        }
+        if (uploadData) {
+            console.log('Memory uploaded successfully:', uploadData);
+            navigate('/')
+        }
+        setLoading(false);
+        setDisableSend(false);
     }
+    const [loading, setLoading] = useState(false);	
+
+
+
+
+
     return (
-        <div className="w-full overflow-auto flex items-center justify-center">
-            <div className="md:w-1/2 w-full mx-2 my-2 p-4 border-black border-2 rounded-md text-black flex justify-center space-y-4 flex-col bg-white">
+        <div className="w-full overflow-auto flex items-center justify-center min-h-screen">
+            <div className="md:w-1/2 w-full mx-2 my-2 p-4 border-black border-2 rounded-md text-black flex justify-center space-y-4 flex-col bg-white/95">
                 <h1 className="text-2xl font-bold">Create a new memory</h1>
-                <InputElement label='Titulo' type='text' name='title' id='title' value={data.title} action={handleData}/>
-                <InputElement label='Fecha' type='date' name='date' id='date'value={data.date} action={handleData} />
-                <TextAreaElement label="Descripción" name="description" id="description" value={data.description} action={handleData}/>
+                <InputElement label='Titulo' type='text' name='title' id='title' value={data.title} action={handleData} />
+                <InputElement label='Fecha' type='date' name='date' id='date' value={data.date} action={handleData} />
+                <TextAreaElement label="Descripción" name="description" id="description" value={data.description} action={handleData} />
 
                 <div className="flex flex-col space-y-2">
                     <label htmlFor="image" className="font-bold">Imagen</label>
@@ -131,7 +185,14 @@ export default function CreateNewMemory() {
                         ))
                     )}
                 </div>
-                <button className={`bg-black text-white rounded-md p-2 ${disableSend?'opacity-25':'opacity-100'}`} disabled={disableSend} onClick={sentData} >Create Memory</button>
+                
+                <button className={`text-white rounded-md p-2 ${disableSend ? 'bg-black/25' : 'bg-black'}`} disabled={disableSend} onClick={sentData} >{loading ? (<div className="flex flex-row items-center justify-center space-x-2">
+                        <p>Cargando datos</p><PiSpinnerGapBold/>
+                    </div>) : (
+                    <div>
+                        <p>Crea una memoria</p>
+                    </div>
+                )}</button>
             </div>
         </div>
     )
