@@ -4,7 +4,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import CreateNewMemory from './pages/CreateNewMemory.tsx'
-import CalendarPage from './pages/CalendarPage.tsx'
+import MessagePage from './pages/MessagePage.tsx'
 import TodoListPage from './pages/TodoListPage.tsx'
 import Memory from './pages/Memory.tsx'
 import NotFoundPage from './pages/NotFoundPage.tsx'
@@ -29,8 +29,8 @@ const router = createBrowserRouter([
         path: '/memory',
         element: <Memory />,
       }, {
-        path: '/calendar',
-        element: <CalendarPage />,
+        path: '/message',
+        element: <MessagePage />,
       },{
         path: '/todo-list',
         element: <TodoListPage />,

@@ -16,8 +16,13 @@ export default function Layout() {
 
     return (
         <div className='flex flex-row h-screen'>
-            <Navbar/>
-            <div className='overflow-auto w-full max-h-screen ' style={{ backgroundImage: 'url(/src/assets/Kintsugibg.jpg)' }}>
+            <Navbar />
+            <div className='overflow-auto w-full max-h-screen object-cover' style={{
+                backgroundImage: 'url(/src/assets/KintsubiBackground.jpg)',
+                backgroundSize: 'cover', // Adjust the size of the background image
+                backgroundPosition: 'center', // Center the background image
+                backgroundRepeat: 'no-repeat'
+            }}>
                 <Outlet />
             </div>
         </div>

@@ -15,6 +15,8 @@ interface dataType {
     highlightImage: string
 }
 
+
+
 export default function DetailsPage() {
     const location = useLocation()
     const [images, setImages] = useState<(string | undefined)[]>([])
@@ -49,17 +51,21 @@ export default function DetailsPage() {
         return data?.signedUrl
     }
     return (
-        <div className="h-screen flex flex-col items-center ">
-            <div className="w-full md:w-1/2 mt-10 mb-5 bg-gray-100/80 p-2 rounded-md flex justify-center items-center">
+        <div className="h-screen flex flex-col items-center">
+            <div className="sm:w-1/2 w-full mt-10 mb-5 bg-gray-100/80 p-2 rounded-md flex justify-center items-center">
                 <Carousel autoSlide={true}>
                     {images.map((url, index) => (
-                        <div className="w-full h-64 md:h-96 overflow-hidden flex items-center justify-center" key={index}>
-                            <img src={url} className="w-full h-full object-cover rounded-sm" />
+                        <div className="w-full sm:h-60 md:h-96 lg:h-60 xl:h-[30rem] overflow-hidden flex items-center justify-center object-cover" key={index}>
+                            <img src={url} className="w-full h-full object-cover rounded-sm" style={{
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }} />
                         </div>
                     ))}
                 </Carousel>
             </div>
-            <div className="w-1/2  bg-gray-100/80 rounded-md p-4 flex flex-col justify-center items-center">
+            <div className="sm:w-1/2 w-full bg-gray-100/80 rounded-md p-4 flex flex-col justify-center items-center">
                 <h1>{content?.title}</h1>
                 <p>{content?.date + ''}</p>
                 <p >{content?.details}</p>

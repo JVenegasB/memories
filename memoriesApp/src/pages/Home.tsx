@@ -74,7 +74,7 @@ export default function Home() {
     }
     return (
         <div className="w-full overflow-auto flex flex-col items-center justify-center py-5">
-            <h1 className="mb-5 text-2xl font-semibold">Memories</h1>
+            <h1 className="mb-5 py-5 text-2xl font-semibold text-yellow-300">Memories</h1>
             <div className="w-full lg:px-20 md:px-14 px-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
                 {loading ? (<div className='h-full flex justify-center items-center w-full col-span-full bg-gray-200 text-gray-700 text-xl font-semibold p-4 rounded-md shadow-md'>
                     Cargando memorias...

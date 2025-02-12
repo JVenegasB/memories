@@ -149,7 +149,7 @@ export default function CreateNewMemory() {
     return (
         <div className="w-full overflow-auto flex items-center justify-center min-h-screen">
             <div className="md:w-1/2 w-full mx-2 my-2 p-4 border-black border-2 rounded-md text-black flex justify-center space-y-4 flex-col bg-white/95">
-                <h1 className="text-2xl font-bold">Create a new memory</h1>
+                <h1 className="text-2xl font-bold">Nueva memory</h1>
                 <InputElement label='Titulo' type='text' name='title' id='title' value={data.title} action={handleData} />
                 <InputElement label='Fecha' type='date' name='date' id='date' value={data.date} action={handleData} />
                 <TextAreaElement label="Descripción" name="description" id="description" value={data.description} action={handleData} />

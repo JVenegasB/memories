@@ -11,12 +11,12 @@ export default function LoginPage() {
 
     useEffect(() => {
         console.log(password1, password2)
-        if (password1 === '1234') {
+        if (password1 === '314159265358979') {
             setPassword1Approved(true)
         } else {
             setPassword1Approved(false)
         }
-        if (password2 === '4321') {
+        if (password2 === '1953') {
             setPassword2Approved(true)
         } else {
             setPassword2Approved(false)
@@ -39,6 +39,15 @@ export default function LoginPage() {
         await signIn();
         navigate('/');
     }
+    const [remainingCharsP1, setRemainingCharsP1] = useState<number>(0);
+    const [remainingCharsP2, setRemainingCharsP2] = useState<number>(0);
+
+    useEffect(() => {
+        const remainingCharacters = '314159265358979'.length - password1.length;
+        setRemainingCharsP1(remainingCharacters);
+        setRemainingCharsP2('1953'.length - password2.length);
+    }, [password1,password2])
+
     return (
         <div className="h-screen bg-gradient-to-tr flex justify-center items-center" style={{ backgroundImage: 'url(/src/assets/Kintsugibg.jpg)', backgroundSize: 'cover' }}>
             <div className="bg-slate-800 rounded-md text-white p-4 w-full max-w-lg mx-4">
@@ -48,6 +57,7 @@ export default function LoginPage() {
 
                 <div className="flex flex-col">
                     <input onChange={(e) => setPassword1(e.target.value)} id={"password1"} name={"password1"} type={"text"} required placeholder={"Tu clave"} className={`w-full appearance-none rounded-none focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-slate-700 px-3 py-2 my-1 border border-slate-600 placeholder-slate-500 text-slate-200 rounded-t-md`} />
+                    {(password1 && remainingCharsP1!==0) && <div>Caracteres faltantes: {remainingCharsP1}</div>}
                 </div>
                 {password1Approved && (
                     <>
@@ -55,6 +65,7 @@ export default function LoginPage() {
                             <h2 className="text-3xl font-extrabold">Ingresa MI clave!</h2>
                         </div>
                         <input onChange={(e) => setPassword2(e.target.value)} id={"password2"} name={"password2"} type={"text"} required placeholder={"Mi clave"} className={`w-full appearance-none rounded-none focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-slate-700 px-3 py-2 border border-slate-600 placeholder-slate-500 text-slate-200 rounded-b-md`} />
+                        {(password2 && remainingCharsP2!==0) && <div>Caracteres faltantes: {remainingCharsP2}</div>}
                     </>
                 )}
                 {(password1Approved && password2Approved) && (
