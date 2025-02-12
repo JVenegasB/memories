@@ -3,8 +3,8 @@ import { useState } from "react";
 import { FaArrowCircleLeft, FaArrowAltCircleRight, FaHeart, FaCamera, FaClipboardList  } from "react-icons/fa";
 import {GrGallery} from 'react-icons/gr';
 import { GiEternalLove } from "react-icons/gi";
-
 import { IconType } from "react-icons";
+import logo from '../assets/AJWhite.png';
 
 
 interface LinkComponentProps {
@@ -36,7 +36,7 @@ export default function Navbar() {
         <div className="z-50">
             <div className={`bg-green-950 h-full text-white  ${isOpen ? 'w-64 sm:static absolute' : 'hidden'} md:block `}>
                 <div className="">
-                    <h3 className="mb-5 flex justify-center w-full pt-4 pb-5 border-b-4 ">{isOpen ? (<img src="/src/assets/AJWhite.png" alt="Logo" className="w-52"/>):(<FaHeart />)}</h3>
+                    <h3 className="mb-5 flex justify-center w-full pt-4 pb-5 border-b-4 ">{isOpen ? (<img src={logo} alt="Logo" className="w-52"/>):(<FaHeart />)}</h3>
                     <LinkComponent destiny='/' text='Galeria' icon={GrGallery} isTriggered={isOpen} />
                     <LinkComponent destiny='/new-memory' text='Agregar una memoria' icon={FaCamera} isTriggered={isOpen} />
                     <LinkComponent destiny='/todo-list' text='To-Do List' icon={FaClipboardList} isTriggered={isOpen}/>

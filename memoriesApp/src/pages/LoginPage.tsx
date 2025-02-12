@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase/client';
 import { useNavigate } from 'react-router-dom';
+import BackGround from '../assets/KintsubiBackground.jpg';
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function LoginPage() {
     }, [password1,password2])
 
     return (
-        <div className="h-screen bg-gradient-to-tr flex justify-center items-center" style={{ backgroundImage: 'url(/src/assets/Kintsugibg.jpg)', backgroundSize: 'cover' }}>
+        <div className="h-screen bg-gradient-to-tr flex justify-center items-center" style={{ backgroundImage: `url(${BackGround})`, backgroundSize: 'cover' }}>
             <div className="bg-slate-800 rounded-md text-white p-4 w-full max-w-lg mx-4">
                 <div className="flex justify-center items-center my-10">
                     <h1 className="text-3xl font-extrabold">Ingresa tu clave!</h1>

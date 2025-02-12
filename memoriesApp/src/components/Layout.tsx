@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { useEffect } from 'react';
 import { supabase } from '../supabase/client';
 import { useNavigate } from 'react-router-dom';
+import BackGround from '../assets/KintsubiBackground.jpg';
 
 export default function Layout() {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function Layout() {
         <div className='flex flex-row h-screen'>
             <Navbar />
             <div className='overflow-auto w-full max-h-screen object-cover' style={{
-                backgroundImage: 'url(/src/assets/KintsubiBackground.jpg)',
+                backgroundImage: `url(${BackGround})`, // Set the background image
                 backgroundSize: 'cover', // Adjust the size of the background image
                 backgroundPosition: 'center', // Center the background image
                 backgroundRepeat: 'no-repeat'
