@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { FaArrowCircleLeft, FaArrowAltCircleRight, FaHeart, FaCamera, FaClipboardList, FaCalendarAlt } from "react-icons/fa";
+import { FaArrowCircleLeft, FaArrowAltCircleRight, FaHeart, FaCamera, FaClipboardList  } from "react-icons/fa";
 import {GrGallery} from 'react-icons/gr';
+import { GiEternalLove } from "react-icons/gi";
+
 import { IconType } from "react-icons";
 
 
@@ -38,7 +40,7 @@ export default function Navbar() {
                     <LinkComponent destiny='/' text='Galeria' icon={GrGallery} isTriggered={isOpen} />
                     <LinkComponent destiny='/new-memory' text='Agregar una memoria' icon={FaCamera} isTriggered={isOpen} />
                     <LinkComponent destiny='/todo-list' text='To-Do List' icon={FaClipboardList} isTriggered={isOpen}/>
-                    <LinkComponent destiny='/message' text='Compilation' icon={FaCalendarAlt } isTriggered={isOpen}/>
+                    <LinkComponent destiny='/message' text='Compilation' icon={GiEternalLove  } isTriggered={isOpen}/>
                 </div>
             </div>
             <div className={`bg-black text-white px-3 py-1 absolute top-2 left-2 md:hidden`}>
